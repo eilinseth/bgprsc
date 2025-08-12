@@ -1,5 +1,5 @@
 import { useState } from "react"
-import axios, { Axios } from "axios"
+import axios from "axios"
 
 
 function App() {
@@ -16,8 +16,10 @@ function App() {
 
       async function getBGPJson () {
         try{
-          const res = await fetch(`https://api.bgpview.io/asn/${asn}/prefixes`)
-          console.log(res)
+          const req = await axios.get(`http://localhost:5000/api/asn/${asn}`)
+          const res =  req.data
+          const data = res.data
+          console.log(data)
         }
         catch(e){
           console.error(e)

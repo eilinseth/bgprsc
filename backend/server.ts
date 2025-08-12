@@ -1,18 +1,23 @@
 import axios from "axios"
-import express from "express"
+import express,{Request,Response} from "express"
 import cors from "cors"
+
 
 const app  = express()
 app.use(cors())
 
-app.get("/api/asn/:asn" , async (req,res) => {
+app.get("/api/asn/:asn" , async (req:Request,res:Response) => {
     try {
-        const asn =  req.params
-        const data = await axios.get(`https://api.bgpview.io/asn/${asn}/prefixes`)
+        const {asn} =  req.params
+        const response = await axios.get(`https://api.bgpview.io/asn/${asn}/prefixes`)
 
-        res.json(data)
+        res.json(response.data)
     }catch(err){
-        res.status(500).json({error : err.message})
+       if (err instanceof Error) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: "Unknown error" });
+    }
     }
 })
 
