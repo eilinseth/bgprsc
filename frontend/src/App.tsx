@@ -1,6 +1,12 @@
 import { useState } from "react"
 import axios from "axios"
+import  {useForm} from "react-hook-form"
 
+type FormValues = {
+  asn : string
+  addresListName : string
+  fileName : string
+}
 
 function App() {
   const [lang,setLang] =useState<"en"|"id">("en")
@@ -8,10 +14,12 @@ function App() {
   const [addressListName , setAddressListName] = useState("")
   const [fileName,setFileName] = useState("")
   const [loading,setIsLoading] = useState(false)
+  const {register , handleSubmit , formState:{errors}} = useForm<FormValues>()
+
+
   
-  function handleSubmit(e){
-      e.preventDefault()
-      console.log(asn,addressListName,fileName)
+  function onSubmit(values:FormValues){
+      console.log(values.asn,values.addresListName,values.fileName)
       setIsLoading(true)
 
       async function getBGPJson () {
@@ -60,23 +68,28 @@ function App() {
         <section className="h-screen w-screen bg-slate-200 py-15  md:px-20">
           <div className="flex justify-center items-center flex-col gap-5">
             <div className="w-[85%]  h-50 md:h-[calc(100vh-150px)]">
-              <form action="" className="flex gap-5 flex-col" onSubmit={handleSubmit}>
+              <form action="" className="flex gap-5 flex-col" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-2">
 
                 <label htmlFor="" className="font-bold">Input ASN Number :</label>
-                <input type="text" name="asn" value={asn} onChange={(e) => setAsn(e.target.value)} placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold " />
-
+                <input type="text" placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold "
+                {...register("asn",{required : "Need to fill ASN Number",pattern:{value : /^\d+$/, message:"ASN must a number"}})} />
+                {errors.asn && (<p className="text-red-600 font-semibold">{errors.asn.message}</p>)}
                 </div>
                 <div className="flex flex-col gap-2">
 
                 <label htmlFor="" className="font-bold">Address list name :</label>
-                <input type="text" name="addressListName" value={addressListName} onChange={(e) => setAddressListName(e.target.value)} placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold " />
+                <input type="text" placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold " 
+                {...register("addresListName", {required: "4 character minimal " , minLength:4})}
+                />
 
                 </div>
                 <div className="flex flex-col gap-2">
 
                 <label htmlFor="" className="font-bold">File Name :</label>
-                <input type="text" name="fileName" value={fileName} onChange={(e) => setFileName(e.target.value)} placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold " />
+                <input type="text" placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold " 
+                {...register("fileName",{required:"4 character minimal" , minLength:4})}
+                />
 
                 </div>
 
