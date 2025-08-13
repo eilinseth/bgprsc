@@ -1,6 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
-import  {useForm} from "react-hook-form"
+import  {useForm, useWatch} from "react-hook-form"
+
 
 type FormValues = {
   asn : string
@@ -10,32 +11,49 @@ type FormValues = {
 
 function App() {
   const [lang,setLang] =useState<"en"|"id">("en")
-  const [asn,setAsn] = useState("")
-  const [addressListName , setAddressListName] = useState("")
-  const [fileName,setFileName] = useState("")
   const [loading,setIsLoading] = useState(false)
   const {register , handleSubmit , formState:{errors}} = useForm<FormValues>()
+  const [downloadUrl,setDownloadUrl] = useState("")
+  const [fileName , setFileName] = useState("")
 
 
   
   function onSubmit(values:FormValues){
       console.log(values.asn,values.addresListName,values.fileName)
+      setFileName(values.fileName)
       setIsLoading(true)
-
+    
       async function getBGPJson () {
         try{
-          const req = await axios.get(`http://localhost:5000/api/asn/${asn}`)
+          //fetching dari backend buat hindarin cors
+          const req = await axios.get(`http://localhost:5000/api/asn/${values.asn}`)
           const res =  req.data
           const data = res.data
-          console.log(data)
+          //misahin ipv4 sama ipv6
+          const ipv4 = data.ipv4_prefixes.map((item : {prefix : string}) => `add address=${item.prefix} list=${values.addresListName}`)
+          const ipv6 = data.ipv6_prefixes.map((item : {prefix : string}) => `add address=${item.prefix} list=${values.addresListName}`)
+          //gabungin sintaks firewall di mikrotik nya
+          const rscContent = `/ip firewall address-list\n${ipv4.join("\n")}\n${ipv6.join("\n")}`
+
+          //buat file download
+          const blob = new Blob([rscContent],{type:"text/plain"})
+          const url  = URL.createObjectURL(blob)
+
+          setDownloadUrl(url)
+       
+        
+
         }
         catch(e){
           console.error(e)
+        }finally{
+        setIsLoading(false)
+
         }
       }
 
       getBGPJson()
-      setIsLoading(false)
+      console.log(loading)
   }
   return (
     <div className="scroll-smooth">
@@ -65,45 +83,54 @@ function App() {
       </div>
     </div>
           <div className="h-20 w-screen bg-slate-600 "></div>
-        <section className="h-screen w-screen bg-slate-200 py-15  md:px-20">
+        <section className="min-h-screen w-screen bg-slate-300 py-15  md:px-20">
+          <h1 className="text-center mb-10 text-4xl text-[navy] font-bold">Try here</h1>
           <div className="flex justify-center items-center flex-col gap-5">
             <div className="w-[85%]  h-50 md:h-[calc(100vh-150px)]">
-              <form action="" className="flex gap-5 flex-col" onSubmit={handleSubmit(onSubmit)}>
+              <form action="" className="flex gap-5 flex-col justify-center items-center" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-2">
 
                 <label htmlFor="" className="font-bold">Input ASN Number :</label>
                 <input type="text" placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold "
-                {...register("asn",{required : "Need to fill ASN Number",pattern:{value : /^\d+$/, message:"ASN must a number"}})} />
-                {errors.asn && (<p className="text-red-600 font-semibold">{errors.asn.message}</p>)}
+                {...register("asn",{required : "Must be filled",pattern:{value : /^\d+$/, message:"ASN must a number"}})} />
+                    {errors.asn && (<p className="text-red-600 font-semibold">{errors.asn.message}</p>)}
                 </div>
                 <div className="flex flex-col gap-2">
 
                 <label htmlFor="" className="font-bold">Address list name :</label>
                 <input type="text" placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold " 
-                {...register("addresListName", {required: "4 character minimal " , minLength:4})}
+                {...register("addresListName", {required:{value:true,message: "Must be filled "} , minLength:{value:4 , message:"Minimal 4 Character"}})}
                 />
-
+                    {errors.addresListName && (<p className="text-red-600 font-semibold">{errors.addresListName.message}</p>)}
                 </div>
                 <div className="flex flex-col gap-2">
 
                 <label htmlFor="" className="font-bold">File Name :</label>
                 <input type="text" placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold " 
-                {...register("fileName",{required:"4 character minimal" , minLength:4})}
+                {...register("fileName",{required:{value:true , message:"Must be fiiled" }, minLength:{value : 4 , message : "Minimal 4 Character"}})}
                 />
-
+                    { errors.fileName && (<p className="text-red-600 font-semibold">{errors.fileName.message}</p>)}
                 </div>
 
                 <button className="w-40 text-white font-bold cursor-pointer  bg-green-500 py-1 px-2 rounded-2xl">Submit</button>
               </form>
             </div>
-            {loading && (
-              <div>
-                Bentar Loading
+
+            {loading &&  (
+              <div className="mt-10 md:-mt-30 flex flex-col gap-4 justify-center items-center">
+                <p className="text-purple-500 text-2xl font-semibold">Loading...</p>
+                <div className="w-10 h-10 border-2 border-t-transparent border-[navy] rounded-full animate-spin"></div>
               </div>
             )}
 
-            {!loading && (
-              <div>Loading dah kelar</div>
+            {!loading && downloadUrl && (
+              <div className="mt-30 md:-mt-30 flex flex-col gap-4 justify-center items-center"><p className="text-purple-500 text-2xl font-semibold">Loading is done</p>
+                <a href={downloadUrl}
+                download={`${fileName}.rsc`}
+                className="bg-green-600 text-white px-4 py-2 rounded"
+                >Download File</a>
+              </div>
+              
             )}
             
 
