@@ -12,14 +12,13 @@ type FormValues = {
 function App() {
   const [lang,setLang] =useState<"en"|"id">("en")
   const [loading,setIsLoading] = useState(false)
-  const {register , handleSubmit , formState:{errors}} = useForm<FormValues>()
+  const {register , handleSubmit , formState:{errors},reset} = useForm<FormValues>()
   const [downloadUrl,setDownloadUrl] = useState("")
   const [fileName , setFileName] = useState("")
 
 
   
   function onSubmit(values:FormValues){
-      console.log(values.asn,values.addresListName,values.fileName)
       setFileName(values.fileName)
       setIsLoading(true)
     
@@ -41,7 +40,7 @@ function App() {
 
           setDownloadUrl(url)
        
-        
+        reset()
 
         }
         catch(e){
@@ -53,7 +52,7 @@ function App() {
       }
 
       getBGPJson()
-      console.log(loading)
+      
   }
   return (
     <div className="scroll-smooth">
@@ -127,8 +126,8 @@ function App() {
               <div className="mt-30 md:-mt-30 flex flex-col gap-4 justify-center items-center"><p className="text-purple-500 text-2xl font-semibold">Loading is done</p>
                 <a href={downloadUrl}
                 download={`${fileName}.rsc`}
-                className="bg-green-600 text-white px-4 py-2 rounded"
-                >Download File</a>
+                className="bg-green-600 text-white px-4 py-2 rounded font-bold"
+                >Download {fileName}.rsc</a>
               </div>
               
             )}
