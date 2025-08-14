@@ -1,6 +1,6 @@
 import { useState } from "react"
 import axios from "axios"
-import  {useForm, useWatch} from "react-hook-form"
+import  {useForm} from "react-hook-form"
 
 
 type FormValues = {
@@ -56,13 +56,13 @@ function App() {
   }
   return (
     <div className="scroll-smooth">
-    <div className=" bg-gradient-to-t bg-[linear-gradient(to_top,_#ff4500,_#ff7e00,_#ffd700,_#b565d9,_#1a237e)] h-screen w-screen ">
+    <div className="  bg-linear-to-b from-[#ff2904] to-[#9333EA] h-screen w-screen shadow-purple-400 ">
       <div className="bg-white/20 backdrop-blur-lg w-screen h-screen ">
       <section className="px-[6%] pt-20 md:pt-50 ">
         <h1 className="font-bold text-white drop-shadow-black drop-shadow-xs text-4xl -mt-10 md:-mt-14 ">BGPview ASN to Mikrotik RSC</h1>
       </section>
 
-        <div className="flex justify-center items-center lg:max-w-[60%] max-w-[75%] sm:-mt-1 sm:ml-10 md:-mt-5 md:ml-12 lg:ml-20 ml-8 lg:h-40  lg:-mt-2  lg:p-5 mt-2  lg:bg-slate-300/40">
+        <div className="flex justify-center items-center lg:max-w-[60%] max-w-[75%] sm:-mt-1 sm:ml-10 md:-mt-5 md:ml-12 lg:ml-20 ml-8 lg:h-40  lg:-mt-2  lg:p-5 mt-2  lg:bg-slate-300/40 shadow-lg shadow-white rounded-lg">
           {lang === "en" ? (
             <p className="font-semibold mt-4 lg:mt-0  drop-shadow-lg drop-shadow-white text-black/70">BGPView ASN to Mikrotik RSC is a simple web tool that converts ASN prefix data from the BGPView API into a MikroTik RouterOS <span className="font-bold text-slate-800 border-black w-fit px-1 bg-gray-200">.rsc</span> script.
             This allows network administrators to quickly import complete IP ranges of a specific organization or service directly into MikroTik’s firewall address list.
@@ -81,34 +81,34 @@ function App() {
           </div>
       </div>
     </div>
-          <div className="h-20 w-screen bg-slate-600 "></div>
-        <section className="min-h-screen w-screen bg-slate-300 py-15  md:px-20">
-          <h1 className="text-center mb-10 text-4xl text-[navy] font-bold">Try here</h1>
+          <div className="h-20 w-screen bg-gradient-to-b from-purple-300  to-blue-50 "></div>
+        <section className="min-h-screen w-screen bg-gradient-to-b from-blue-50 to-blue-100 py-15  md:px-20 " >
+          <h1 className="text-center mb-10 text-4xl bg-linear-90 from-[#3B82F6] to-[#9333EA] bg-clip-text text-transparent font-bold">Generate Mikrotik Firewall Script</h1>
+          
           <div className="flex justify-center items-center flex-col gap-5">
             <div className="w-[85%]  h-50 md:h-[calc(100vh-150px)]">
-              <form action="" className="flex gap-5 flex-col justify-center items-center" onSubmit={handleSubmit(onSubmit)}>
+              <form action="" className="flex gap-8 flex-col justify-center items-center bg-linear-90 from-[#3B82F6] to-[#9333EA] bg-clip-text text-transparent text-lg " onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col gap-2">
-
                 <label htmlFor="" className="font-bold">Input ASN Number :</label>
-                <input type="text" placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold "
-                {...register("asn",{required : "Must be filled",pattern:{value : /^\d+$/, message:"ASN must a number"}})} />
-                    {errors.asn && (<p className="text-red-600 font-semibold">{errors.asn.message}</p>)}
+                <input type="text" placeholder="......." className="text-black py-0.5 px-2 bg-slate-100  font-semibold w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                {...register("asn",{required : "Cannot Empty",pattern:{value : /^\d+$/, message:"ASN must a number"}})} />
+                    {errors.asn && (<p className="text-red-600 md:-mt-1 md:-mb-2 font-semibold">{errors.asn.message}</p>)}
                 </div>
                 <div className="flex flex-col gap-2">
 
                 <label htmlFor="" className="font-bold">Address list name :</label>
-                <input type="text" placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold " 
-                {...register("addresListName", {required:{value:true,message: "Must be filled "} , minLength:{value:4 , message:"Minimal 4 Character"}})}
+                <input type="text" placeholder="......." className="text-black py-0.5 px-2 bg-slate-100  font-semibold w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
+                {...register("addresListName", {required:{value:true,message: "Cannot Empty "} , minLength:{value:4 , message:"Minimal 4 Character"}})}
                 />
-                    {errors.addresListName && (<p className="text-red-600 font-semibold">{errors.addresListName.message}</p>)}
+                    {errors.addresListName && (<p className="text-red-600 md:-mt-1 md:-mb-2 font-semibold">{errors.addresListName.message}</p>)}
                 </div>
                 <div className="flex flex-col gap-2">
 
                 <label htmlFor="" className="font-bold">File Name :</label>
-                <input type="text" placeholder="......." className="w-40 py-0.5 px-2 bg-slate-100 rounded-xl border-2 border-black font-semibold " 
-                {...register("fileName",{required:{value:true , message:"Must be fiiled" }, minLength:{value : 4 , message : "Minimal 4 Character"}})}
+                <input type="text" placeholder="......." className="text-black py-0.5 px-2 bg-slate-100  font-semibold w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" 
+                {...register("fileName",{required:{value:true , message:"Cannot Empty" }, minLength:{value : 4 , message : "Minimal 4 Character"}})}
                 />
-                    { errors.fileName && (<p className="text-red-600 font-semibold">{errors.fileName.message}</p>)}
+                    { errors.fileName && (<p className="text-red-600 md:-mt-1 md:-mb-2 font-semibold">{errors.fileName.message}</p>)}
                 </div>
 
                 <button className="w-40 text-white font-bold cursor-pointer  bg-green-500 py-1 px-2 rounded-2xl">Submit</button>
@@ -136,16 +136,14 @@ function App() {
 
           </div>
         </section>
-          <div className="h-20 w-screen bg-slate-600 "></div>
+          <div className="h-20 w-screen bg-gradient-to-b from-blue-100 to-slate-300 "></div>
 
-        <section className="h-screen w-screen bg-blue-900 py-15 px-20">
+        <section className="min-h-screen w-screen bg-gradient-to-b from-slate-300 to-blue-900 py-15 px-20">
           <div className="flex justify-center items-center gap-5">
-            <div className="w-1/2 bg-amber-300 h-[calc(100vh-80px)]">
-
+            <div className="w-[75%]  h-[calc(100vh-80px)]">
+                <h1 className="text-4xl text-center font-bold bg-linear-90 from-[#3B82F6] to-[#9333EA] bg-clip-text text-transparent drop-shadow-white drop-shadow-lg">How to Works</h1>
             </div>
-            <div className="w-1/2 bg-red-400 h-[calc(100vh-80px)]">
             
-            </div>
 
 
           </div>
