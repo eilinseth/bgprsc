@@ -1,5 +1,5 @@
 import { useState } from "react"
-import axios from "axios"
+import axios,{AxiosError} from "axios"
 import  {useForm} from "react-hook-form"
 
 
@@ -15,12 +15,15 @@ function App() {
   const {register , handleSubmit , formState:{errors},reset} = useForm<FormValues>()
   const [downloadUrl,setDownloadUrl] = useState("")
   const [fileName , setFileName] = useState("")
+  const [errorMessage,setErrorMessage] = useState("")
+  const [error,setError] = useState(false)
 
 
   
   function onSubmit(values:FormValues){
       setFileName(values.fileName)
       setIsLoading(true)
+      setDownloadUrl("")
     
       async function getBGPJson () {
         try{
@@ -28,6 +31,11 @@ function App() {
           const req = await axios.get(`http://localhost:5000/api/asn/${values.asn}`)
           const res =  req.data
           const data = res.data
+          if(data.ipv4_prefixes.length === 0 && data.ipv6_prefixes.length === 0){
+            setError(true)
+            reset()
+            return
+          }
           //misahin ipv4 sama ipv6
           const ipv4 = data.ipv4_prefixes.map((item : {prefix : string}) => `add address=${item.prefix} list=${values.addresListName}`)
           const ipv6 = data.ipv6_prefixes.map((item : {prefix : string}) => `add address=${item.prefix} list=${values.addresListName}`)
@@ -39,15 +47,34 @@ function App() {
           const url  = URL.createObjectURL(blob)
 
           setDownloadUrl(url)
-       
+        setError(false)
         reset()
 
         }
-        catch(e){
-          console.error(e)
+        catch(err){
+          if(axios.isAxiosError(err)){
+            const axiosErr = err as AxiosError<{message?:string,error?:string}>
+            setError(true)
+
+            if(axiosErr.response?.data?.message){
+              setErrorMessage(axiosErr.response.data.message)
+            }
+
+            else if (axiosErr.response?.data?.error) {
+              setErrorMessage(axiosErr.response.data.error)
+            }
+
+            else if (axiosErr.request){
+              setErrorMessage("No respond from server")
+            }else{
+              setErrorMessage(axiosErr.message)
+            }
+          }else{
+            setErrorMessage("Unknown Error")
+          }
         }finally{
         setIsLoading(false)
-
+        setError(false)
         }
       }
 
@@ -83,7 +110,7 @@ function App() {
     </div>
           <div className="h-20 w-screen bg-gradient-to-b from-purple-300  to-blue-50 "></div>
         <section className="min-h-screen w-screen bg-gradient-to-b from-blue-50 to-blue-100 py-15  md:px-20 " >
-          <h1 className="text-center mb-10 text-4xl bg-linear-90 from-[#3B82F6] to-[#9333EA] bg-clip-text text-transparent font-bold">Generate Mikrotik Firewall Script</h1>
+          <h1 className="text-center mb-10 text-4xl bg-linear-90 md:mb-20 from-[#3B82F6] to-[#9333EA] bg-clip-text text-transparent font-bold">Generate Mikrotik Firewall Script</h1>
           
           <div className="flex justify-center items-center flex-col gap-5">
             <div className="w-[85%]  h-50 md:h-[calc(100vh-150px)]">
@@ -122,6 +149,12 @@ function App() {
               </div>
             )}
 
+            {!loading && !downloadUrl && error && (
+              <div className="mt-30 md:-mt-30 flex flex-col gap-4 justify-center items-center">
+                <p className="text-2xl text-red-600 font-semibold">{errorMessage}</p>
+              </div>
+            )}
+
             {!loading && downloadUrl && (
               <div className="mt-30 md:-mt-30 flex flex-col gap-4 justify-center items-center"><p className="text-purple-500 text-2xl font-semibold">Loading is done</p>
                 <a href={downloadUrl}
@@ -141,7 +174,7 @@ function App() {
         <section className="min-h-screen w-screen bg-gradient-to-b from-slate-300 to-blue-900 py-15 px-20">
           <div className="flex justify-center items-center gap-5">
             <div className="w-[75%]  h-[calc(100vh-80px)]">
-                <h1 className="text-4xl text-center font-bold bg-linear-90 from-[#3B82F6] to-[#9333EA] bg-clip-text text-transparent drop-shadow-white drop-shadow-lg">How to Works</h1>
+                <h1 className="text-4xl text-center font-bold bg-linear-90 from-[#3B82F6] to-[#9333EA] bg-clip-text text-transparent drop-shadow-white drop-shadow-lg">How it Works</h1>
             </div>
             
 
