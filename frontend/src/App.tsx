@@ -1,12 +1,18 @@
-import { useEffect, useState } from "react"
+import {  useState , useEffect } from "react"
 import axios,{AxiosError} from "axios"
 import  {useForm} from "react-hook-form"
+import * as THREE from "three"
+import NET from "vanta/src/vanta.net"
 
 
 type FormValues = {
   asn : string
   addresListName : string
   fileName : string
+}
+
+type VantaEffect = {
+  destroy : () => void
 }
 
 function App() {
@@ -16,7 +22,31 @@ function App() {
   const [downloadUrl,setDownloadUrl] = useState("")
   const [fileName , setFileName] = useState("")
   const [errorMessage,setErrorMessage] = useState("")
+  const [vantaEffect,setVantaEffect] = useState<VantaEffect | null>(null)
 
+  useEffect(() => {
+    if(!vantaEffect){
+      const effect = NET({
+        el: "#bg-main",
+        THREE,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x6969f2,
+        backgroundColor: 0x8040f,
+        maxDistance: 25.00,
+        spacing: 16.00
+})
+  setVantaEffect(effect)
+    }
+    return() =>{
+      if(vantaEffect) vantaEffect.destroy()
+    }
+  },[vantaEffect])
 
  
   function onSubmit(values:FormValues){
@@ -79,15 +109,15 @@ function App() {
   }
   return (
     <div className="scroll-smooth">
-    <div className="  bg-linear-to-b from-[#ff2904] to-[#9333EA] h-screen w-screen shadow-purple-400 ">
-      <div className="bg-white/20 backdrop-blur-lg w-screen h-screen ">
+    <div id="bg-main" className="  h-screen w-screen  ">
+      <div className="bg-white/20 backdrop-blur-sm w-screen h-screen ">
       <section className="px-[6%] pt-20 md:pt-50 ">
         <h1 className="font-bold text-white drop-shadow-black drop-shadow-xs text-4xl -mt-10 md:-mt-14 ">BGPview ASN to Mikrotik RSC</h1>
       </section>
 
         <div className="flex justify-center items-center lg:max-w-[55%] md:max-w-[70%] sm:max-w-[78%] max-w-[85%] sm:mt-4 sm:ml-10 md:mt-2 md:ml-12 lg:ml-20 ml-8 lg:h-40  lg:-mt-2  lg:p-5 mt-5 px-2 py-2 bg-slate-300/40 shadow-lg shadow-white rounded-lg">
           {lang === "en" ? (
-            <p className="font-semibold mt-4 lg:mt-0  drop-shadow-lg drop-shadow-white text-black/70">BGPView ASN to Mikrotik RSC is a simple web tool that converts ASN prefix data from the BGPView API into a MikroTik RouterOS <span className="font-bold text-slate-800 border-black w-fit px-1 bg-gray-200">.rsc</span> script.
+            <p className="font-semibold mt-4 lg:mt-0  drop-shadow-xl drop-shadow-white text-black/70">BGPView ASN to Mikrotik RSC is a simple web tool that converts ASN prefix data from the BGPView API into a MikroTik RouterOS <span className="font-bold text-slate-800 border-black w-fit px-1 bg-gray-200">.rsc</span> script.
             This allows network administrators to quickly import complete IP ranges of a specific organization or service directly into MikroTik’s firewall address list.
             Ideal for blocking or allowing entire ASN ranges without manually adding IP addresses.</p>
           ): (
@@ -104,8 +134,7 @@ function App() {
           </div>
       </div>
     </div>
-          <div className="h-20 w-screen bg-gradient-to-b from-purple-300  to-blue-50 "></div>
-        <section className="min-h-screen w-screen bg-gradient-to-b from-blue-50 to-blue-100 py-15  md:px-20 " >
+        <section className="min-h-screen w-screen bg-slate-300 pb-15 pt-30  md:px-20 " >
           <h1 className="text-center mb-10 text-4xl bg-linear-90 md:mb-20 from-[#3B82F6] to-[#9333EA] bg-clip-text text-transparent font-bold">Generate Mikrotik Firewall Script</h1>
 
           <div className="flex justify-center items-center flex-col gap-5">
