@@ -217,7 +217,7 @@ function App() {
                   Fill the form with ASN Number, Address List name (decide naming of address-list in MikroTik), and File Name (decide the file name for downloaded)
                   <div className="flex flex-col md:flex-row">
                   <img src="/tutorial/3.png" className="w-100 lg:w-130 lg:h-90 mt-2 ml-4" alt="" />
-                  <img src="/tutorial/5.png" className="w-100 lg:w-100 lg:h-90 mt-2 ml-20" alt="" />
+                  <img src="/tutorial/5.png" className="w-100 lg:w-100 lg:h-90 mt-2 ml-4 md:ml-20" alt="" />
                   
                   </div>
                 </li>
