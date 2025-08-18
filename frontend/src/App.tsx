@@ -120,7 +120,7 @@ function App() {
 
         <div className="flex justify-center items-center lg:max-w-[55%] md:max-w-[70%] sm:max-w-[78%] max-w-[85%] sm:mt-4 sm:ml-10 md:mt-2 md:ml-12 lg:ml-20 ml-8 lg:h-40  lg:-mt-2  lg:p-5 mt-5 px-2 py-2 bg-slate-300/40 shadow-lg shadow-white rounded-lg">
           {lang === "en" ? (
-            <p className="font-semibold mt-4 lg:mt-0  drop-shadow-xl drop-shadow-white text-black/70">BGPView ASN to Mikrotik RSC is a simple web tool that converts ASN prefix data from the BGPView API into a MikroTik RouterOS <span className="font-bold text-slate-800 border-black w-fit px-1 bg-gray-200">.rsc</span> script.
+            <p className="font-semibold mt-4 lg:mt-0  drop-shadow-lg drop-shadow-white text-black/70">BGPView ASN to Mikrotik RSC is a simple web tool that converts ASN prefix data from the BGPView API into a MikroTik RouterOS <span className="font-bold text-slate-800 border-black w-fit px-1 bg-gray-200">.rsc</span> script.
             This allows network administrators to quickly import complete IP ranges of a specific organization or service directly into MikroTik’s firewall address list.
             Ideal for blocking or allowing entire ASN ranges without manually adding IP addresses.</p>
           ): (
