@@ -4,6 +4,7 @@ import  {useForm} from "react-hook-form"
 import * as THREE from "three"
 import NET from "vanta/src/vanta.net"
 
+ 
 
 type FormValues = {
   asn : string
@@ -110,7 +111,7 @@ function App() {
 
   }
   return (
-    <div className="scroll-smooth">
+    <div className="scroll-smooth ">
     <div id="bg-main" className="  h-screen w-screen  ">
       <div className="bg-white/20 backdrop-blur-sm w-screen h-screen ">
       <section className="px-[6%] pt-20 md:pt-50 ">
@@ -197,19 +198,76 @@ function App() {
           </div>
         </section>
 
-        <section className="min-h-screen w-screen bg-slate-800 py-15 px-20">
+        <section className="min-h-screen w-screen bg-slate-800 py-16  lg:px-20 ">
           
-            <div className="w-[75%]  h-[calc(100vh-80px)] mx-auto ">
-                <h1 className="text-4xl text-center font-bold bg-linear-90 from-sky-400 to-purple-500 bg-clip-text text-transparent ">Tutorial</h1>
+            <div className=" mx-auto ">
+                <h1 className="text-4xl text-center font-bold bg-linear-90 from-sky-400 to-purple-500 bg-clip-text text-transparent ">How to Block Facebook ASN on Mikrotik</h1>
             
 
-            <div className="text-white font-semibold flex items-center justify-start mt-20 text-xl">
-              <ol className="list-decimal pl-[2rem] ">
-                <li >You need to know the <b>asn number</b> from <a target="_blank" href="https://bgpview.io/" className="font-bold">bgpview.io</a>. In this tutorial i will use facebook's asn number</li>
-                <li className="mt-4"></li>
-                <li className="mt-4"></li>
-                <li className="mt-4"></li>
-                <li className="mt-4"></li>
+            <div className="text-white font-semibold  mt-20 lg:text-xl ">
+              <ol className="list-decimal list-outside pl-[2rem] sm:max-w-[80%] md:max-w-screen space-y-10 mx-auto  ">
+                <li className="">
+                  Get the ASN number from<a target="_blank" href="https://bgpview.io/" className="font-bold"> bgpview.io</a>
+                  <div className="flex flex-col md:flex-row ">
+                  <img src="/tutorial/1.png" className="w-100 lg:w-130 lg:h-70 mt-2 ml-4" alt="" />
+                  <img src="/tutorial/2.png" className="w-100 lg:w-130 lg:h-70 mt-2 ml-4" alt="" />
+                  </div>
+                </li>
+                <li className="mt-10">
+                  Fill the form with ASN Number, Address List name (decide naming of address-list in MikroTik), and File Name (decide the file name for downloaded)
+                  <div className="flex flex-col md:flex-row">
+                  <img src="/tutorial/3.png" className="w-100 lg:w-130 lg:h-90 mt-2 ml-4" alt="" />
+                  <img src="/tutorial/5.png" className="w-100 lg:w-100 lg:h-90 mt-2 ml-20" alt="" />
+                  
+                  </div>
+                </li>
+                <li className="mt-10">
+                  Download the file
+                  <div className="flex flex-col md:flex-row">
+                  <img src="/tutorial/4.png" className="w-100 lg:w-130 lg:h-80 mt-2 ml-4" alt="" />
+                  <img src="/tutorial/6.png" className="w-100 lg:w-130 h-20 lg:h-30 mt-2 ml-4" alt="" />
+                  </div>
+                </li>
+                <li className="mt-10">
+                  Drag the file into Files menu in MikroTik
+                  <div className="flex flex-col md:flex-row">
+                  <img src="/tutorial/7.png" className="w-100 lg:w-130 lg:h-90 mt-2 ml-4" alt="" />
+                  <img src="/tutorial/8.png" className="w-100 lg:w-130 h-40 lg:h-50 mt-2 ml-4" alt="" />
+
+
+                  </div>
+                </li>
+                <li className="mt-10">
+                  Write "<span className="text-[#CC66FF]">import</span> <span className="text-[#66FF66]">file-name</span><span className="text-amber-300">=</span>facebook.rsc" in terminal
+                  <div className="flex flex-col md:flex-row">
+                  <img src="/tutorial/9.png" className="w-100 lg:w-130 md:h-10 mt-2 ml-4" alt="" />
+                  <img src="/tutorial/10.png" className="w-100 lg:w-130 lg:h-60 mt-2 ml-4" alt="" />
+
+
+                  </div>
+                </li>
+                <li className="mt-10">
+                  Check Address List
+                  <div className="flex flex-col md:flex-row">
+                  <img src="/tutorial/11.png" className="w-100 lg:w-130 lg:h-80 mt-2 ml-4" alt="" />
+                  <img src="/tutorial/11.1.png" className="w-100 lg:w-130 lg:h-80 mt-2 ml-4" alt="" />
+                  </div>
+                </li>
+                <li className="mt-10">
+                  Create a firewall rule. Set In/Out Interface to the interface that is connected to the network. Do the same thing with ipv6
+                  <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap">
+                  <img src="/tutorial/12.png" className="w-100 lg:w-130 lg:h-80 mt-2 ml-4" alt="" />
+                  <img src="/tutorial/13.png" className="w-100 lg:w-130 lg:h-80 mt-2 ml-4" alt="" />
+                  <img src="/tutorial/14.png" className="w-100 lg:w-130 lg:h-80 mt-2 ml-4" alt="" />
+                  </div>
+                </li>
+                <li className="mt-10">
+                  Result
+                  <div className="flex flex-col md:flex-row">
+                  <img src="/tutorial/16.png" className="w-100 lg:w-130 md:h-10 mt-2 ml-4" alt="" />
+                  <img src="/tutorial/15.png" className="w-100 lg:w-130 lg:h-80 mt-1 ml-4" alt="" />
+                  </div>
+                </li>
               </ol>
             </div>
             

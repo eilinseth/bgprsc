@@ -18,7 +18,8 @@
     "react-hook-form": "^7.62.0",
     "tailwindcss": "^4.1.11",
     "three": "^0.179.1",
-    "vanta": "^0.5.24"
+    "vanta": "^0.5.24",
+    "webfontloader": "^1.6.28"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
