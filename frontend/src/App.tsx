@@ -115,7 +115,7 @@ function App() {
     <div id="bg-main" className="  h-screen w-screen  ">
       <div className="bg-white/20 backdrop-blur-sm w-screen h-screen ">
       <section className="px-[6%] pt-20 md:pt-50 ">
-        <h1 className="font-bold text-white drop-shadow-black drop-shadow-xs text-4xl mt-20 md:-mt-14 ">BGPview ASN to Mikrotik RSC</h1>
+        <h1 className="font-bold text-white drop-shadow-black drop-shadow-xs text-4xl mt-20 md:-mt-14 ">{lang === "en" ? "BGPview ASN to MikroTik RSC" : "ASN BGPview ke RSC MikroTik"}</h1>
       </section>
 
         <div className="flex justify-center items-center lg:max-w-[55%] md:max-w-[70%] sm:max-w-[78%] max-w-[85%] sm:mt-4 sm:ml-10 md:mt-2 md:ml-12 lg:ml-20 ml-8 lg:h-40  lg:-mt-2  lg:p-5 mt-5 px-2 py-2 bg-slate-300/40 shadow-lg shadow-white rounded-lg">
@@ -132,8 +132,8 @@ function App() {
           )}
         </div>
           <div className="flex gap-2 lg:mt-6 lg:ml-21 md:ml-12 mt-6 ml-8 sm:ml-10">
-            <button onClick={() => setLang("en")} className="bg-blue-500 text-white px-3 py-1 rounded font-bold">EN</button>
-        <button onClick={() => setLang("id")} className="bg-green-500 text-white px-3 py-1 rounded font-bold">ID</button>
+            <button onClick={() => setLang("en")} className="bg-blue-500 text-white px-3 py-1 rounded font-bold cursor-pointer">EN</button>
+        <button onClick={() => setLang("id")} className="bg-green-500 text-white px-3 py-1 rounded font-bold cursor-pointer">ID</button>
           </div>
       </div>
     </div>
@@ -179,7 +179,7 @@ function App() {
 
             {!loading && !downloadUrl && errorMessage && (
               <div className="mt-35 md:-mt-30 flex flex-col gap-4 justify-center items-center">
-                <p className="text-2xl text-red-600 font-semibold">{errorMessage}</p>
+                <p className="text-2xl text-red-600 font-semibold md:mt-6">{lang === "en" ? errorMessage : "Nomor ASN tidak ada"}</p>
               </div>
             )}
 
